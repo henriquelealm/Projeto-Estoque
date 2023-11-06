@@ -33,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="pt-br">
 <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="style/cadastrar-cliente.css">
     <title>Cadastro de Cliente</title>
 </head>
 <body>

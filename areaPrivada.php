@@ -49,6 +49,7 @@ if(isset($_SESSION['id_usuario'])) {
     <nav class="menu">
         <ul>
             <li><a href="visualizar-estoque.php">Visualizar Estoque</a></li>
+            <li><a href="cadastrar-cliente.php">Cadastrar Cliente</a></li>
             <li><a href="cadastrar-produtos.php">Cadastrar Produtos</a></li>
             <li><a href="editar-estoque.php">Editar Estoque</a></li>
             <li><a href="registrar-venda.php">Registrar Venda</a></li>

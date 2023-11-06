@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header("location: editar-estoque.php");
             }
             exit;
-        } 
+        }
         if ($categoria === 'comida') {
             // Atualize os dados no banco de dados
             $stmt = $pdo->prepare("UPDATE " . $categoria . " SET nome = ?, data_entrada = ?, data_validade = ?, quantidade_unidades = ?, preco_compra = ?, preco_venda = ?, nome_usuario = ? WHERE id = ?");
@@ -60,13 +60,14 @@ $resultadoComida = $pdo->query($sqlComida);
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta charset="utf-8">
     <title>Editar Estoque</title>
     <link rel="stylesheet" href="style/editar-estoque.css">
     <style>
-       .voltar-icon {
+        .voltar-icon {
             position: absolute;
             top: 10px;
             left: 10px;
@@ -79,6 +80,7 @@ $resultadoComida = $pdo->query($sqlComida);
         }
     </style>
 </head>
+
 <body>
     <i class="fas fa-arrow-left voltar-icon" onclick="window.location.href='areaPrivada.php'"></i> <!-- Ícone de seta com link para áreaPrivada.php -->
 
@@ -167,4 +169,5 @@ $resultadoComida = $pdo->query($sqlComida);
         </table>
     </div>
 </body>
+
 </html>
