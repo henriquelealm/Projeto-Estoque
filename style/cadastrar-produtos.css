@@ -1,0 +1,151 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url(../imagens/principal.png);
+    background-size: cover;
+    color: white;
+    font-family: Arial;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+input {
+    display: block;
+    height: 55px;
+    width: 400px;
+    margin: 10px;
+    border-radius: 30px;
+    border: none;
+    font-size: 16pt;
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.04);
+    color: white;
+    outline: none;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+label[for^="categoria"] {
+    display: inline-block;
+    background: #333;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+    text-align: center;
+}
+
+label[for^="categoria"]:hover {
+    background: #555;
+}
+
+input[type="radio"]:checked + label[for^="categoria"] {
+    background: #10688E;
+}
+
+input[type="radio"]:checked + label[for^="categoria"]:hover {
+    background: #1278a3;
+}
+
+div#corpo-form {
+    width: 420px;
+}
+
+div#corpo-form-cad {
+    width: 420px;
+}
+
+div#corpo-form h1,
+div#corpo-form h2,
+div#corpo-form-cad h1 {
+    text-align: center;
+    padding: 20px;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+input[type=submit] {
+    background-color: #10688E;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+input[type=submit]:hover {
+    background-color: #1278a3;
+}
+
+::-webkit-input-placeholder {
+    color: #fff;
+}
+
+::-moz-placeholder {
+    color: #fff;
+}
+
+:-ms-input-placeholder {
+    color: #fff;
+}
+
+:-moz-placeholder {
+    color: #fff;
+}
+
+div#msg-sucesso {
+    width: 400px;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: rgba(50, 205, 50, .3);
+    border: 1px solid rgb(34, 139, 34);
+}
+
+div.msg-erro {
+    width: 400px;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: rgba(250, 128, 114, .3);
+    border: 1px solid rgb(165, 42, 42);
+}
+
+/* Adicione este CSS ao seu arquivo de estilos (cadastrar-produtos.css) */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.checkbox-label input {
+    margin-right: 5px;
+    width: auto;
+}
+
+.voltar-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.btn-voltar {
+    margin-top: 30px;
+}

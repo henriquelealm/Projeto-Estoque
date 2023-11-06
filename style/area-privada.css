@@ -1,0 +1,123 @@
+/* Reset some default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url(../imagens/principal.png);
+    background-size: cover;
+    font-family: 'Arial', sans-serif;
+}
+
+.user-greeting {
+    font-size: 1.5em;
+    margin-left: 0px;
+    background-color: #333;
+    padding: 20px;
+    color: #f4f4f4;
+}
+
+.menu li {
+    border-right: 1px solid #555;
+}
+
+.menu li:last-child {
+    border-right: none;
+}
+
+.menu a {
+    color: #f4f4f4;
+    text-decoration: none;
+    display: block;
+    padding: 20px 0; /* Aumente o espaçamento vertical entre as opções */
+    text-align: center;
+    font-size: 15px;
+    text-transform: uppercase;
+    transition: background-color 0.3s;
+}
+
+.menu a:hover {
+    background-color: #444;
+}
+
+/* Additional styles for a more complex and beautiful page */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #e9e9e9;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.date-time {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 14px;
+    color: #fffafa;
+}
+
+/* Add some animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.header, .menu li {
+    animation-name: fadeIn;
+    animation-duration: 2s;
+}
+.sidebar {
+    position: fixed;
+    width: 250px;
+    height: 110%;
+    background-color: #333;
+    color: #f4f4f4;
+    transition: transform 0.3s;
+    transform: translateX(-250px);
+    overflow-y: auto;
+    padding-top: 10px;
+}
+
+.sidebar.active {
+    transform: translateX(0);
+}
+
+.menu-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.menu {
+    padding: 20px;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.menu li {
+    margin-bottom: 15px;
+}
+
+.menu a {
+    color: #f4f4f4;
+    text-decoration: none;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+.user-greeting {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+}

@@ -1,0 +1,133 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url(../imagens/principal.png);
+    background-size: cover;
+    color: white;
+    font-family: Arial;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column; /* Alinhar a seção de pesquisa e resultados verticalmente */
+}
+
+form {
+    max-width: 800px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin-top: 10px; /* Diminuir o espaçamento superior do formulário */
+    margin-bottom: 20px;
+    padding: 20px;
+    width: 100%; /* Ocupar a largura total */
+}
+
+h1 {
+    font-size: 30px;
+    margin: 20px;
+    margin-bottom: 10px; /* Aumentar o espaçamento inferior do título */
+}
+
+label[for="termo_pesquisa"] {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px; /* Aumentar o espaçamento */
+    color: #333;
+    font-size: 14px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 5px; /* Aumentar o espaçamento interno */
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px; /* Aumentar o tamanho da fonte */
+}
+
+input[type="submit"][name="pesquisar"] {
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 1px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px; /* Diminuir o espaçamento superior do botão Pesquisar */
+}
+
+/* Diminuir o tamanho da tabela de resultados */
+table {
+    max-width: 300px; /* Definir uma largura máxima para a tabela */
+    border-collapse: collapse;
+    margin-top: 10px; /* Diminuir o espaçamento superior da tabela */
+    margin-bottom: 20px;
+    margin: 0 auto; /* Centralizar a tabela na tela */
+    width: 100%; /* Ocupar a largura total */
+    overflow-x: auto; /* Adicionar rolagem horizontal se o conteúdo for muito largo */
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 5px; /* Aumentar o espaçamento interno */
+    text-align: left;
+    font-size: 12px; /* Reduzir o tamanho da fonte dos resultados */
+    color: #333;
+    white-space: nowrap; /* Evitar que o texto quebre para a próxima linha */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Adicionar reticências (...) para textos longos */
+}
+
+th {
+    background-color: #333;
+    color: #fff;
+}
+
+tbody {
+    max-height: 20px; /* Definir uma altura máxima para o tbody */
+    overflow-y: scroll; /* Adicionar rolagem vertical em caso de conteúdo grande */
+}
+
+tr {
+    background-color: white;
+    color: #333; /* Definir a cor do texto para preto ou outra cor desejada */
+}
+tr.resultado {
+    max-height: 2px; /* Diminuir a altura das linhas de resultados */
+    overflow-y: hidden; /* Remover a rolagem vertical para linhas mais curtas */
+    background-color: white; /* Definir o fundo para branco */
+    color: #333; /* Definir a cor do texto para preto ou outra cor desejada */
+}
+
+/* Diminuir o tamanho do local de inserir a quantidade vendida */
+label[for="quantidade_vendida"] {
+    display: block;
+    font-weight: bold;
+    margin-top: 0px; /* Diminuir o espaçamento superior */
+    color: #333;
+    font-size: 10px; /* Reduzir o tamanho da fonte */
+}
+
+input[type="number"] {
+    width: 40px; /* Reduzir a largura do campo de quantidade vendida */
+    padding: 2px; /* Reduzir o espaçamento interno */
+    margin-top: 5px; /* Diminuir o espaçamento superior */
+    font-size: 10px; /* Reduzir o tamanho da fonte */
+}
+
+/* Dar mais espaço ao botão "Registrar Venda" */
+input[type="submit"][name="venda"] {
+    padding: 1px 1px; /* Aumentar o espaçamento do botão */
+    margin-top: 1px; /* Aumentar o espaçamento superior do botão */
+    margin-left: 5px;
+    
+    font-size: 10px; /* Restaurar o tamanho da fonte do botão para o valor original */
+}
