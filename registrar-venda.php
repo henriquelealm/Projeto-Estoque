@@ -1,11 +1,25 @@
 <?php
+session_start(); // Inicie a sessão
+
+if (!isset($_SESSION['id_usuario'])) {
+    header("location: index.php");
+    exit;
+}
 // Conecte-se ao banco de dados
 $pdo = new PDO("mysql:host=localhost;dbname=projeto_login", "root", "Hlm@1507");
+
+$quantidadeVendidaValida = false; // Variável para rastrear se há pelo menos uma quantidade válida vendida
+$clienteNome = '';
+$clienteTelefone = '';
+$clienteEndereco = '';
+$clienteNaoEncontrado = '';
+$cliente_id = null;
+
 
 // Verifique se o formulário foi submetido
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['pesquisar'])) {
-        // Se o formulário de pesquisa foi submetido, faça a pesquisa
+        // Se o formulário de pesquisa de produtos foi submetido, faça a pesquisa
         $termo_pesquisa = $_POST['termo_pesquisa'];
 
         $sql = "SELECT id, nome, quantidade_unidades, categoria, data_validade, preco_venda FROM (
@@ -19,17 +33,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([':termo_pesquisa' => '%' . $termo_pesquisa . '%']);
 
         $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } elseif (isset($_POST['venda'])) {
+    } elseif (isset($_POST['pesquisar_cliente'])) {
+        // Se o formulário de pesquisa de cliente foi submetido, faça a pesquisa
+        $cliente_cpf_cnpj = $_POST['cliente_cpf_cnpj'];
+    
+        $stmt = $pdo->prepare("SELECT cliente.id AS id, cliente.nome AS nome, cliente.telefone AS telefone, endereco.rua AS rua, endereco.cidade AS cidade, endereco.estado AS estado, endereco.cep AS cep, endereco.numero AS numero, endereco.complemento AS complemento FROM cliente 
+        INNER JOIN endereco ON cliente.endereco_id = endereco.id 
+        WHERE cliente.cpf_ou_cnpj = ?");
+        $stmt->execute([$cliente_cpf_cnpj]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        if ($result) {
+            $clienteNome = $result['nome'];
+            $clienteTelefone = $result['telefone'];
+            $clienteEndereco = "{$result['rua']}, {$result['numero']}, {$result['cidade']}, {$result['estado']}, {$result['cep']}, {$result['complemento']}";
+            
+            // Armazene o ID do cliente na sessão
+            $_SESSION['clienteNome'] = $clienteNome;
+            $_SESSION['clienteTelefone'] = $clienteTelefone;
+            $_SESSION['clienteEndereco'] = $clienteEndereco;
+            // Corrija a atribuição do cliente_id
+            $_SESSION['cliente_id'] = $result['id'];
+        } else {
+            $clienteNaoEncontrado = 'Cliente não encontrado.';
+        }
+        
+        
+    }
+    elseif (isset($_POST['venda'])) {
         // Se o formulário de venda foi submetido, registre a venda
+        $funcionario_id = $_SESSION['id_usuario']; // Substitua pelo ID do funcionário
+
         $tipo_pagamento = $_POST['tipo_pagamento'];
-        $funcionario_id = 2; // Substitua pelo ID do funcionário
+        if (isset($_SESSION['clienteNome'])) {
+            // Use as informações do cliente armazenadas na sessão, se disponíveis
+            $clienteNome = $_SESSION['clienteNome'];
+            $clienteTelefone = $_SESSION['clienteTelefone'];
+            $clienteEndereco = $_SESSION['clienteEndereco'];
+        }
 
         $pdo->beginTransaction();
 
         // Crie uma nova entrada na tabela venda comum
-        $stmt = $pdo->prepare("INSERT INTO venda (quantidade_unidades, data_venda, funcionario_id, tipo_pagamento) VALUES (?, NOW(), ?, ?)");
-        $stmt->execute([0, $funcionario_id, $tipo_pagamento]);
+        // Crie uma nova entrada na tabela de venda comum
+        $stmt = $pdo->prepare("INSERT INTO venda (quantidade_unidades, data_venda, funcionario_id, tipo_pagamento, id) VALUES (?, NOW(), ?, ?, ?)");
+        $stmt->execute([0, $funcionario_id, $tipo_pagamento, $_SESSION['cliente_id']]);
         $venda_id = $pdo->lastInsertId();
+
+
 
         // Agora percorra os itens vendidos (pode ser mais de um)
         if (isset($_POST['itens_vendidos'])) {
@@ -38,8 +89,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $categoria = $item['categoria'];
                 $quantidade_vendida = intval($item['quantidade_vendida']);
 
-                if ($quantidade_vendida > 0) { // Verifique se a quantidade é maior que zero
-                    // Verifique se há unidades suficientes no estoque
+                if ($quantidade_vendida > 0) {
+                    $quantidadeVendidaValida = true;
+
                     $stmt = $pdo->prepare("SELECT quantidade_unidades, preco_venda FROM $categoria WHERE id = ?");
                     $stmt->execute([$item_id]);
                     $estoque_info = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -48,7 +100,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $preco_venda = $estoque_info['preco_venda'];
                         $total_venda = $preco_venda * $quantidade_vendida;
 
-                        // Insira o item vendido na tabela correspondente (bebida ou comida)
                         if ($categoria === 'bebida') {
                             $stmt = $pdo->prepare("INSERT INTO venda_bebida (venda_id, bebida_id, quantidade, total_venda) VALUES (?, ?, ?, ?)");
                         } elseif ($categoria === 'comida') {
@@ -56,7 +107,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         }
                         $stmt->execute([$venda_id, $item_id, $quantidade_vendida, $total_venda]);
 
-                        // Atualize o estoque subtraindo a quantidade vendida
                         $stmt = $pdo->prepare("UPDATE $categoria SET quantidade_unidades = quantidade_unidades - ? WHERE id = ?");
                         $stmt->execute([$quantidade_vendida, $item_id]);
                     } else {
@@ -68,8 +118,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        $pdo->commit();
-        echo "Venda de comida registrada com sucesso!";
+        if ($quantidadeVendidaValida) {
+            $pdo->commit();
+            echo "Venda registrada com sucesso!";
+        } else {
+            echo '<script>';
+            echo 'alert("Nenhum produto com quantidade válida foi selecionado. A venda não foi registrada.");';
+            echo '</script>';
+        }
     }
 }
 ?>
@@ -81,58 +137,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Registrar Venda</title>
     <link rel="stylesheet" href="style/registrar-venda.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .voltar-icon {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .container {
-            margin-top: 20px;
-        }
-
-        .form-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .form-label {
-            flex: 1;
-        }
-
-        .form-input {
-            flex: 2;
-            width: 70px;
-        }
-
-        .select-payment {
-            width: 70px;
-            margin-left: 10px;
-        }
-
-        .btn-submit {
-            margin-left: 10px;
-        }
-
-        .btn-branco {
-            background-color: #fff;
-            color: #333;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-
-        .btn-branco:hover {
-            background-color: #eee;
-        }
-    </style>
 </head>
 <body>
     <i class="fas fa-arrow-left voltar-icon" onclick="window.location.href='areaPrivada.php'"></i>
@@ -178,24 +182,85 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo '<input type="hidden" name="itens_vendidos[' . $index . '][categoria]" value="' . $row['categoria'] . '">';
                     echo '<label for="quantidade_vendida" class="form-label">Quantidade Vendida:</label>';
                     echo '<input type="number" name="itens_vendidos[' . $index . '][quantidade_vendida]" min="1" class="form-input">';
-                    echo '<select name="tipo_pagamento" class="select-payment">';
-                    echo '<option value="Cartão">Cartão</option>';
-                    echo '<option value="PIX">PIX</option>';
-                    echo '<option value="Dinheiro">Dinheiro</option>';
-                    echo '</select>';
                     echo '</td>';
                     echo '</tr>';
                     $index++;
                 }
 
-                echo '<tr>';
-                echo '<td colspan="6"></td>';
-                echo '<td><input type="submit" name="venda" value="Registrar Venda" class="btn-submit"></td>';
-                echo '</tr>';
                 echo '</table>';
+                echo '<div class="form-row">';
+                echo '<label for="tipo_pagamento" class="form-label">Selecione o Método de Pagamento:</label>';
+                echo '<select name="tipo_pagamento" class="select-payment">';
+                echo '<option value="Cartão">Cartão</option>';
+                echo '<option value="PIX">PIX</option>';
+                echo '<option value="Dinheiro">Dinheiro</option>';
+                echo '</select>';
+                echo '</div>';
+                echo '<input type="submit" name="venda" value="Registrar Venda" class="btn-submit">';
                 echo '</form>';
             } else {
                 echo 'Nenhum resultado encontrado.';
+            }
+        }
+        ?>
+
+        <?php
+        if (isset($clienteNome)) {
+            // Exibir informações do cliente se encontrado
+            if (empty($clienteNaoEncontrado)) {
+                echo '<div class="cliente-info-popup">';
+                echo '<span class="close-popup" onclick="fecharPopup()">&times;</span>';
+                echo '<h2>Informações do Cliente:</h2>';
+                echo '<p><strong>Nome do Cliente:</strong> ' . $_SESSION['clienteNome'] . '</p>';
+                echo '<p><strong>Telefone:</strong> ' . $_SESSION['clienteTelefone'] . '</p>';
+                echo '<p><strong>Endereço:</strong> ' . $_SESSION['clienteEndereco'] . '</p>';
+                echo '</div>';
+                echo '<script>
+                    function fecharPopup() {
+                        document.querySelector(".cliente-info-popup").style.display = "none";
+                    }
+                </script>';
+            } else {
+                echo '<p>' . $clienteNaoEncontrado . '</p>';
+            }
+        }
+        ?>
+
+        <h2>Inserir Cliente</h2>
+
+        <form method="POST" action="registrar-venda.php">
+            <div class="form-row">
+                <label for="cliente_cpf_cnpj" class="form-label">CPF ou CNPJ do Cliente:</label>
+                <input type="text" name="cliente_cpf_cnpj" class="form-input">
+                <input type="submit" name="pesquisar_cliente" value="Pesquisar Cliente" class="btn-branco">
+            </div>
+        </form>
+
+
+        <?php
+        if (isset($clienteNome)) {
+            // Exibir informações do cliente se encontrado
+            if (empty($clienteNaoEncontrado)) {
+                echo '<div class="cliente-info-popup">';
+                echo '<span class="close-popup" onclick="fecharPopup()">&times;</span>';
+                echo '<h2>Informações do Cliente:</h2>';
+                echo '<p><strong>Nome do Cliente:</strong> ' . $clienteNome . '</p>';
+                echo '<p><strong>Telefone:</strong> ' . $clienteTelefone . '</p>';
+                echo '<p><strong>Endereço:</strong> ' . $clienteEndereco . '</p>';
+
+                // Exiba outras informações do cliente aqui se necessário
+                echo '</div>';
+                echo '<script>
+                    function fecharPopup() {
+                        document.querySelector(".cliente-info-popup").style.display = "none";
+                    }
+                    // Mostre o popup ao carregar a página, você pode controlar quando mostrá-lo
+                    document.addEventListener("DOMContentLoaded", function() {
+                        document.querySelector(".cliente-info-popup").style.display = "block";
+                    });
+                </script>';
+            } else {
+                echo '<p>' . $clienteNaoEncontrado . '</p>';
             }
         }
         ?>

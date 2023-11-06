@@ -131,3 +131,132 @@ input[type="submit"][name="venda"] {
     
     font-size: 10px; /* Restaurar o tamanho da fonte do botão para o valor original */
 }
+
+label[for="cliente_cpf_cnpj"] {
+    color: black;
+}
+
+/* Adicione este CSS ao seu arquivo CSS da página */
+.cliente-info {
+    margin-top: 20px;
+}
+
+.cliente-info h2 {
+    font-size: 18px;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.cliente-info p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+/* Adicione este CSS ao seu arquivo CSS da página */
+.cliente-info-popup {
+    display: none;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 300px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 1000;
+    color: #000; /* Cor do texto em preto */
+}
+
+.cliente-info-popup p strong {
+    font-weight: bold; /* Adicione esta linha para tornar o texto em negrito */
+}
+
+.cliente-info-popup.show {
+    right: 0;
+}
+
+.cliente-info-popup h2 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.cliente-info-popup p {
+    margin: 5px 0;
+}
+
+.close-popup {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}
+.voltar-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.form-label {
+    flex: 1;
+}
+
+.form-input {
+    flex: 2;
+    width: 70px;
+}
+
+.select-payment {
+    width: 70px;
+    margin-left: 10px;
+}
+
+.btn-submit {
+    margin-left: 10px;
+}
+
+.btn-branco {
+    background-color: #fff;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.btn-branco:hover {
+    background-color: #eee;
+}
+
+/* Estilos para o popup */
+.cliente-info-popup {
+    display: none;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 300px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 1000;
+}
+
+.close-popup {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}

@@ -53,7 +53,9 @@ if(isset($_SESSION['id_usuario'])) {
             <li><a href="cadastrar-produtos.php">Cadastrar Produtos</a></li>
             <li><a href="editar-estoque.php">Editar Estoque</a></li>
             <li><a href="registrar-venda.php">Registrar Venda</a></li>
+            <li><a href="historico-vendas.php">Histórico de Vendas</a></li>
             <li><a href="gerar-relatorios.php">Gerar Relatórios</a></li>
+            
             <li><a href="sair.php">Sair</a></li>
         </ul>
     </nav>
