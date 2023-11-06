@@ -34,6 +34,7 @@ $u = new Usuarios();
 
 <?php
 
+
 if(isset($_POST['nome'])):
     
     $nome = addslashes($_POST['nome']);
