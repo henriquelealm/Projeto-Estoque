@@ -14,15 +14,18 @@
             <th>Funcionário</th>
             <th>Tipo de Pagamento</th>
             <th>Itens Vendidos</th>
+            <th>Nome do Cliente</th>
+            <th>Telefone do Cliente</th>
+            <th>Endereço do Cliente</th>
         </tr>
         <?php
         // Conexão com o banco de dados
         $pdo = new PDO("mysql:host=localhost;dbname=projeto_login", "root", "Hlm@1507");
 
-        // Consulta SQL para buscar as vendas
-        $sql = "SELECT venda.id, venda.data_venda, funcionario.nome AS funcionario, venda.tipo_pagamento 
-                FROM venda
-                JOIN funcionario ON venda.funcionario_id = funcionario.id";
+        $sql = "SELECT venda.id, venda.data_venda, funcionario.nome AS funcionario, venda.tipo_pagamento, cliente.nome AS cliente_nome, cliente.telefone AS cliente_telefone
+        FROM venda
+        JOIN funcionario ON venda.funcionario_id = funcionario.id
+        LEFT JOIN cliente ON venda.id_cliente = cliente.id";
 
         $stmt = $pdo->query($sql);
 
@@ -60,6 +63,16 @@
             echo '<li style="color: green;">Total da Venda: R$ ' . number_format($total_venda, 2) . '</li>';
             echo "</ul>";
             echo "</td>";
+
+            // Exibir informações do cliente
+            echo "<td>" . $row['cliente_nome'] . "</td>";
+            echo "<td>" . $row['cliente_telefone'] . "</td>";
+            
+            // Adicione placeholders para o endereço do cliente
+            echo "<td>";
+            echo "<p><strong>Endereço:</strong> [Rua, Número, Cidade, Estado, CEP, Complemento]</p>";
+            echo "</td>";
+
             echo "</tr>";
         }
         ?>

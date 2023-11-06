@@ -1,84 +1,83 @@
 <?php
-session_start(); // Inicie a sessão
+session_start();
 
 if (!isset($_SESSION['id_usuario'])) {
     header("location: index.php");
     exit;
 }
-// Conecte-se ao banco de dados
+
 $pdo = new PDO("mysql:host=localhost;dbname=projeto_login", "root", "Hlm@1507");
 
-$quantidadeVendidaValida = false; // Variável para rastrear se há pelo menos uma quantidade válida vendida
+$quantidadeVendidaValida = false;
 $clienteNome = '';
 $clienteTelefone = '';
 $clienteEndereco = '';
 $clienteNaoEncontrado = '';
-$cliente_id = null;
 
-
-// Verifique se o formulário foi submetido
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['pesquisar'])) {
         // Se o formulário de pesquisa de produtos foi submetido, faça a pesquisa
         $termo_pesquisa = $_POST['termo_pesquisa'];
 
-        $sql = "SELECT id, nome, quantidade_unidades, categoria, data_validade, preco_venda FROM (
-            SELECT id, nome, quantidade_unidades, 'bebida' as categoria, data_validade, preco_venda FROM bebida
-            UNION
-            SELECT id, nome, quantidade_unidades, 'comida' as categoria, data_validade, preco_venda FROM comida
-        ) AS produtos
-        WHERE nome LIKE :termo_pesquisa";
+            $sql = "SELECT id, nome, quantidade_unidades, categoria, data_validade, preco_venda FROM (
+                SELECT id, nome, quantidade_unidades, 'bebida' as categoria, data_validade, preco_venda FROM bebida
+                UNION
+                SELECT id, nome, quantidade_unidades, 'comida' as categoria, data_validade, preco_venda FROM comida
+            ) AS produtos
+            WHERE nome LIKE :termo_pesquisa";
 
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([':termo_pesquisa' => '%' . $termo_pesquisa . '%']);
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':termo_pesquisa' => '%' . $termo_pesquisa . '%']);
 
-        $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } elseif (isset($_POST['pesquisar_cliente'])) {
-        // Se o formulário de pesquisa de cliente foi submetido, faça a pesquisa
-        $cliente_cpf_cnpj = $_POST['cliente_cpf_cnpj'];
+            $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } elseif (isset($_POST['pesquisar_cliente'])) {
+            $cliente_cpf_cnpj = $_POST['cliente_cpf_cnpj'];
     
-        $stmt = $pdo->prepare("SELECT cliente.id AS id, cliente.nome AS nome, cliente.telefone AS telefone, endereco.rua AS rua, endereco.cidade AS cidade, endereco.estado AS estado, endereco.cep AS cep, endereco.numero AS numero, endereco.complemento AS complemento FROM cliente 
-        INNER JOIN endereco ON cliente.endereco_id = endereco.id 
-        WHERE cliente.cpf_ou_cnpj = ?");
-        $stmt->execute([$cliente_cpf_cnpj]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt = $pdo->prepare("SELECT cliente.id AS id, cliente.nome AS nome, cliente.telefone AS telefone, endereco.rua AS rua, endereco.cidade AS cidade, endereco.estado AS estado, endereco.cep AS cep, endereco.numero AS numero, endereco.complemento AS complemento FROM cliente 
+            INNER JOIN endereco ON cliente.endereco_id = endereco.id 
+            WHERE cliente.cpf_ou_cnpj = ?");
+            $stmt->execute([$cliente_cpf_cnpj]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
     
-        if ($result) {
-            $clienteNome = $result['nome'];
-            $clienteTelefone = $result['telefone'];
-            $clienteEndereco = "{$result['rua']}, {$result['numero']}, {$result['cidade']}, {$result['estado']}, {$result['cep']}, {$result['complemento']}";
-            
-            // Armazene o ID do cliente na sessão
-            $_SESSION['clienteNome'] = $clienteNome;
-            $_SESSION['clienteTelefone'] = $clienteTelefone;
-            $_SESSION['clienteEndereco'] = $clienteEndereco;
-            // Corrija a atribuição do cliente_id
-            $_SESSION['cliente_id'] = $result['id'];
-        } else {
-            $clienteNaoEncontrado = 'Cliente não encontrado.';
-        }
-        
-        
-    }
-    elseif (isset($_POST['venda'])) {
-        // Se o formulário de venda foi submetido, registre a venda
-        $funcionario_id = $_SESSION['id_usuario']; // Substitua pelo ID do funcionário
-
-        $tipo_pagamento = $_POST['tipo_pagamento'];
-        if (isset($_SESSION['clienteNome'])) {
-            // Use as informações do cliente armazenadas na sessão, se disponíveis
-            $clienteNome = $_SESSION['clienteNome'];
-            $clienteTelefone = $_SESSION['clienteTelefone'];
-            $clienteEndereco = $_SESSION['clienteEndereco'];
-        }
-
-        $pdo->beginTransaction();
-
-        // Crie uma nova entrada na tabela venda comum
-        // Crie uma nova entrada na tabela de venda comum
-        $stmt = $pdo->prepare("INSERT INTO venda (quantidade_unidades, data_venda, funcionario_id, tipo_pagamento, id) VALUES (?, NOW(), ?, ?, ?)");
-        $stmt->execute([0, $funcionario_id, $tipo_pagamento, $_SESSION['cliente_id']]);
-        $venda_id = $pdo->lastInsertId();
+            if ($result) {
+                $clienteNome = $result['nome'];
+                $clienteTelefone = $result['telefone'];
+                $clienteEndereco = "{$result['rua']}, {$result['numero']}, {$result['cidade']}, {$result['estado']}, {$result['cep']}, {$result['complemento']}";
+    
+                $_SESSION['clienteNome'] = $clienteNome;
+                $_SESSION['clienteTelefone'] = $clienteTelefone;
+                $_SESSION['clienteEndereco'] = $clienteEndereco;
+    
+                // Armazene o ID do cliente na sessão
+                $_SESSION['cliente_id'] = $result['id'];
+            } else {
+                $clienteNaoEncontrado = 'Cliente não encontrado.';
+            }
+        } elseif (isset($_POST['venda'])) {
+            $funcionario_id = $_SESSION['id_usuario'];
+            $tipo_pagamento = $_POST['tipo_pagamento'];
+    
+            if (isset($_SESSION['clienteNome'])) {
+                $clienteNome = $_SESSION['clienteNome'];
+                $clienteTelefone = $_SESSION['clienteTelefone'];
+                $clienteEndereco = $_SESSION['clienteEndereco'];
+    
+                // Consultar o ID do cliente com base no nome
+                $stmt = $pdo->prepare("SELECT id FROM cliente WHERE nome = ?");
+                $stmt->execute([$clienteNome]);
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+                if ($result) {
+                    $cliente_id = $result['id'];
+                }
+            }
+    
+            $pdo->beginTransaction();
+    
+            // Crie uma nova entrada na tabela de venda
+            $stmt = $pdo->prepare("INSERT INTO venda (quantidade_unidades, data_venda, funcionario_id, tipo_pagamento, id_cliente) VALUES (?, NOW(), ?, ?, ?)");
+            $stmt->execute([0, $funcionario_id, $tipo_pagamento, $cliente_id]);
+            $venda_id = $pdo->lastInsertId();
 
 
 
