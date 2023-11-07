@@ -260,3 +260,7 @@ label[for="cliente_cpf_cnpj"] {
     right: 5px;
     cursor: pointer;
 }
+/* Adicione este CSS ao seu arquivo CSS da página */
+.hidden {
+    display: none;
+}

@@ -186,7 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 echo '</table>';
                 echo '<div class="form-row">';
-                echo '<label for="tipo_pagamento" class="form-label">Selecione o Método de Pagamento:</label>';
+                echo '<label for="tipo_pagamento" class "form-label">Selecione o Método de Pagamento:</label>';
                 echo '<select name="tipo_pagamento" class="select-payment">';
                 echo '<option value="Cartão">Cartão</option>';
                 echo '<option value="PIX">PIX</option>';
@@ -224,15 +224,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ?>
 
         <h2>Inserir Cliente</h2>
-
         <form method="POST" action="registrar-venda.php">
-            <div class="form-row">
+            <div class="form-row" id="cliente-search-bar">
                 <label for="cliente_cpf_cnpj" class="form-label">CPF ou CNPJ do Cliente:</label>
                 <input type="text" name="cliente_cpf_cnpj" class="form-input">
                 <input type="submit" name="pesquisar_cliente" value="Pesquisar Cliente" class="btn-branco">
             </div>
         </form>
-
+        
         <?php
         if (isset($clienteNome)) {
             // Verifique se as chaves existem e têm valores antes de exibir o popup
@@ -256,10 +255,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     });
                 </script>';
             }
-        } else {
-            echo '<p>' . $clienteNaoEncontrado . '</p>';
         }
         ?>
     </div>
+    <script>
+    // Ocultar a barra de pesquisa de clientes após a pesquisa de produtos
+    if (<?php echo isset($resultados) ? 'true' : 'false'; ?>) {
+        document.querySelector("body > div > form:nth-child(8)").style.display = 'none';
+        document.querySelector("body > div > h2:nth-child(7)").style.display = 'none';
+    }
+</script>
+
 </body>
 </html>
