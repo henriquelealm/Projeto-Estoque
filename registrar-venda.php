@@ -19,67 +19,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Se o formulário de pesquisa de produtos foi submetido, faça a pesquisa
         $termo_pesquisa = $_POST['termo_pesquisa'];
 
-            $sql = "SELECT id, nome, quantidade_unidades, categoria, data_validade, preco_venda FROM (
-                SELECT id, nome, quantidade_unidades, 'bebida' as categoria, data_validade, preco_venda FROM bebida
-                UNION
-                SELECT id, nome, quantidade_unidades, 'comida' as categoria, data_validade, preco_venda FROM comida
-            ) AS produtos
-            WHERE nome LIKE :termo_pesquisa";
+        $sql = "SELECT id, nome, quantidade_unidades, categoria, data_validade, preco_venda FROM (
+            SELECT id, nome, quantidade_unidades, 'bebida' as categoria, data_validade, preco_venda FROM bebida
+            UNION
+            SELECT id, nome, quantidade_unidades, 'comida' as categoria, data_validade, preco_venda FROM comida
+        ) AS produtos
+        WHERE nome LIKE :termo_pesquisa";
 
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([':termo_pesquisa' => '%' . $termo_pesquisa . '%']);
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':termo_pesquisa' => '%' . $termo_pesquisa . '%']);
 
-            $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } elseif (isset($_POST['pesquisar_cliente'])) {
-            $cliente_cpf_cnpj = $_POST['cliente_cpf_cnpj'];
-    
-            $stmt = $pdo->prepare("SELECT cliente.id AS id, cliente.nome AS nome, cliente.telefone AS telefone, endereco.rua AS rua, endereco.cidade AS cidade, endereco.estado AS estado, endereco.cep AS cep, endereco.numero AS numero, endereco.complemento AS complemento FROM cliente 
-            INNER JOIN endereco ON cliente.endereco_id = endereco.id 
-            WHERE cliente.cpf_ou_cnpj = ?");
-            $stmt->execute([$cliente_cpf_cnpj]);
+        $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } elseif (isset($_POST['pesquisar_cliente'])) {
+        $cliente_cpf_cnpj = $_POST['cliente_cpf_cnpj'];
+
+        $stmt = $pdo->prepare("SELECT cliente.id AS id, cliente.nome AS nome, cliente.telefone AS telefone, endereco.rua AS rua, endereco.cidade AS cidade, endereco.estado AS estado, endereco.cep AS cep, endereco.numero AS numero, endereco.complemento AS complemento FROM cliente 
+        INNER JOIN endereco ON cliente.endereco_id = endereco.id 
+        WHERE cliente.cpf_ou_cnpj = ?");
+        $stmt->execute([$cliente_cpf_cnpj]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            $clienteNome = $result['nome'];
+            $clienteTelefone = $result['telefone'];
+            $clienteEndereco = "{$result['rua']}, {$result['numero']}, {$result['cidade']}, {$result['estado']}, {$result['cep']}, {$result['complemento']}";
+
+            $_SESSION['clienteNome'] = $clienteNome;
+            $_SESSION['clienteTelefone'] = $clienteTelefone;
+            $_SESSION['clienteEndereco'] = $clienteEndereco;
+
+            // Armazene o ID do cliente na sessão
+            $_SESSION['cliente_id'] = $result['id'];
+        } else {
+            $clienteNaoEncontrado = 'Cliente não encontrado.';
+        }
+    } elseif (isset($_POST['venda'])) {
+        $funcionario_id = $_SESSION['id_usuario'];
+        $tipo_pagamento = $_POST['tipo_pagamento'];
+
+        if (isset($_SESSION['clienteNome'])) {
+            $clienteNome = $_SESSION['clienteNome'];
+            $clienteTelefone = $_SESSION['clienteTelefone'];
+            $clienteEndereco = $_SESSION['clienteEndereco'];
+
+            // Consultar o ID do cliente com base no nome
+            $stmt = $pdo->prepare("SELECT id FROM cliente WHERE nome = ?");
+            $stmt->execute([$clienteNome]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+
             if ($result) {
-                $clienteNome = $result['nome'];
-                $clienteTelefone = $result['telefone'];
-                $clienteEndereco = "{$result['rua']}, {$result['numero']}, {$result['cidade']}, {$result['estado']}, {$result['cep']}, {$result['complemento']}";
-    
-                $_SESSION['clienteNome'] = $clienteNome;
-                $_SESSION['clienteTelefone'] = $clienteTelefone;
-                $_SESSION['clienteEndereco'] = $clienteEndereco;
-    
-                // Armazene o ID do cliente na sessão
-                $_SESSION['cliente_id'] = $result['id'];
-            } else {
-                $clienteNaoEncontrado = 'Cliente não encontrado.';
+                $cliente_id = $result['id'];
             }
-        } elseif (isset($_POST['venda'])) {
-            $funcionario_id = $_SESSION['id_usuario'];
-            $tipo_pagamento = $_POST['tipo_pagamento'];
-    
-            if (isset($_SESSION['clienteNome'])) {
-                $clienteNome = $_SESSION['clienteNome'];
-                $clienteTelefone = $_SESSION['clienteTelefone'];
-                $clienteEndereco = $_SESSION['clienteEndereco'];
-    
-                // Consultar o ID do cliente com base no nome
-                $stmt = $pdo->prepare("SELECT id FROM cliente WHERE nome = ?");
-                $stmt->execute([$clienteNome]);
-                $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-                if ($result) {
-                    $cliente_id = $result['id'];
-                }
-            }
-    
-            $pdo->beginTransaction();
-    
-            // Crie uma nova entrada na tabela de venda
-            $stmt = $pdo->prepare("INSERT INTO venda (quantidade_unidades, data_venda, funcionario_id, tipo_pagamento, id_cliente) VALUES (?, NOW(), ?, ?, ?)");
-            $stmt->execute([0, $funcionario_id, $tipo_pagamento, $cliente_id]);
-            $venda_id = $pdo->lastInsertId();
+        }
 
+        $pdo->beginTransaction();
 
+        // Crie uma nova entrada na tabela de venda
+        $stmt = $pdo->prepare("INSERT INTO venda (quantidade_unidades, data_venda, funcionario_id, tipo_pagamento, id_cliente) VALUES (?, NOW(), ?, ?, ?)");
+        $stmt->execute([0, $funcionario_id, $tipo_pagamento, $cliente_id]);
+        $venda_id = $pdo->lastInsertId();
 
         // Agora percorra os itens vendidos (pode ser mais de um)
         if (isset($_POST['itens_vendidos'])) {
@@ -234,7 +232,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="submit" name="pesquisar_cliente" value="Pesquisar Cliente" class="btn-branco">
             </div>
         </form>
-
 
         <?php
         if (isset($clienteNome)) {
