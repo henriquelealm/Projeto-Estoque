@@ -20,7 +20,7 @@
         </tr>
         <?php
         // Conexão com o banco de dados
-        $pdo = new PDO("mysql:host=localhost;dbname=projeto_login", "root", "sua senha");
+        require_once 'config.php';
 
         $sql = "SELECT venda.id, venda.data_venda, funcionario.nome AS funcionario, venda.tipo_pagamento, cliente.nome AS cliente_nome, cliente.telefone AS cliente_telefone, cliente.endereco_id
         FROM venda

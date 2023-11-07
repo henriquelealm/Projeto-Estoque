@@ -1,6 +1,6 @@
 <?php
 // Conecte-se ao banco de dados
-$pdo = new PDO("mysql:host=localhost;dbname=projeto_login", "root", "sua senha");
+require_once 'config.php';
 
 // Consulta SQL para selecionar todos os registros de bebida
 $sqlBebida = "SELECT * FROM bebida";

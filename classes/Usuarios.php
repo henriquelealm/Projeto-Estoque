@@ -8,7 +8,7 @@ class Usuarios {
         $host = "localhost"; // Altere para o seu host, se necessário
         $nome = "projeto_login"; // Altere para o nome do seu banco de dados
         $usuario = "root"; // Altere para o nome de usuário do seu banco de dados
-        $senha = "sua senha"; // Altere para a senha do seu banco de dados
+        $senha = "Hlm@1507"; // Altere para a senha do seu banco de dados
 
         try {
             $this->pdo = new PDO("mysql:dbname=" . $nome . ";host=" . $host, $usuario, $senha);

@@ -6,7 +6,7 @@ if (!isset($_SESSION['id_usuario'])) {
     exit;
 }
 
-$pdo = new PDO("mysql:host=localhost;dbname=projeto_login", "root", "sua senha");
+require_once 'config.php';
 
 $quantidadeVendidaValida = false;
 $clienteNome = '';
