@@ -20,9 +20,9 @@
         </tr>
         <?php
         // Conexão com o banco de dados
-        $pdo = new PDO("mysql:host=localhost;dbname=projeto_login", "root", "Hlm@1507");
+        $pdo = new PDO("mysql:host=localhost;dbname=projeto_login", "root", "sua senha");
 
-        $sql = "SELECT venda.id, venda.data_venda, funcionario.nome AS funcionario, venda.tipo_pagamento, cliente.nome AS cliente_nome, cliente.telefone AS cliente_telefone
+        $sql = "SELECT venda.id, venda.data_venda, funcionario.nome AS funcionario, venda.tipo_pagamento, cliente.nome AS cliente_nome, cliente.telefone AS cliente_telefone, cliente.endereco_id
         FROM venda
         JOIN funcionario ON venda.funcionario_id = funcionario.id
         LEFT JOIN cliente ON venda.id_cliente = cliente.id";
@@ -67,13 +67,24 @@
             // Exibir informações do cliente
             echo "<td>" . $row['cliente_nome'] . "</td>";
             echo "<td>" . $row['cliente_telefone'] . "</td>";
-            
-            // Adicione placeholders para o endereço do cliente
+
+            // Recuperar o endereço do cliente do banco de dados
+            $sql_endereco = "SELECT rua, numero, cidade, estado, cep, complemento FROM endereco WHERE id = ?";
+            $stmt_endereco = $pdo->prepare($sql_endereco);
+            $stmt_endereco->execute([$row['endereco_id']]);
+            $endereco = $stmt_endereco->fetch(PDO::FETCH_ASSOC);
+
+            // Exibir o endereço do cliente
             echo "<td>";
-            echo "<p><strong>Endereço:</strong> [Rua, Número, Cidade, Estado, CEP, Complemento]</p>";
+            echo "<p><strong>Endereço:</strong> ";
+            if (is_array($endereco)) {
+                echo "{$endereco['rua']}, {$endereco['numero']}, {$endereco['cidade']}, {$endereco['estado']}, {$endereco['cep']}, {$endereco['complemento']}";
+            } else {
+                echo "Endereço não disponível";
+            }
+            echo "</p>";
             echo "</td>";
 
-            echo "</tr>";
         }
         ?>
     </table>

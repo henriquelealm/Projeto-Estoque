@@ -1,6 +1,6 @@
 <?php
 // Conecte-se ao banco de dados
-$pdo = new PDO("mysql:host=localhost;dbname=projeto_login", "root", "Hlm@1507");
+$pdo = new PDO("mysql:host=localhost;dbname=projeto_login", "root", "sua senha");
 
 // Verifique se o formulário foi submetido
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

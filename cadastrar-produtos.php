@@ -7,7 +7,7 @@ if (!isset($_SESSION['id_usuario'])) {
 }
 
 // Conecte-se ao banco de dados
-$pdo = new PDO("mysql:host=localhost;dbname=projeto_login", "root", "Hlm@1507");
+$pdo = new PDO("mysql:host=localhost;dbname=projeto_login", "root", "sua senha");
 
 // Suponhamos que o nome do usuário esteja disponível em $_SESSION['nome_usuario']
 // Consulta para obter o nome do usuário

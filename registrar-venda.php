@@ -6,7 +6,7 @@ if (!isset($_SESSION['id_usuario'])) {
     exit;
 }
 
-$pdo = new PDO("mysql:host=localhost;dbname=projeto_login", "root", "Hlm@1507");
+$pdo = new PDO("mysql:host=localhost;dbname=projeto_login", "root", "sua senha");
 
 $quantidadeVendidaValida = false;
 $clienteNome = '';
@@ -235,29 +235,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <?php
         if (isset($clienteNome)) {
-            // Exibir informações do cliente se encontrado
-            if (empty($clienteNaoEncontrado)) {
+            // Verifique se as chaves existem e têm valores antes de exibir o popup
+            if (!empty($_SESSION['clienteNome']) && !empty($_SESSION['clienteTelefone']) && !empty($_SESSION['clienteEndereco'])) {
                 echo '<div class="cliente-info-popup">';
                 echo '<span class="close-popup" onclick="fecharPopup()">&times;</span>';
                 echo '<h2>Informações do Cliente:</h2>';
-                echo '<p><strong>Nome do Cliente:</strong> ' . $clienteNome . '</p>';
-                echo '<p><strong>Telefone:</strong> ' . $clienteTelefone . '</p>';
-                echo '<p><strong>Endereço:</strong> ' . $clienteEndereco . '</p>';
-
-                // Exiba outras informações do cliente aqui se necessário
+                echo '<p><strong>Nome do Cliente:</strong> ' . $_SESSION['clienteNome'] . '</p>';
+                echo '<p><strong>Telefone:</strong> ' . $_SESSION['clienteTelefone'] . '</p>';
+                echo '<p><strong>Endereço:</strong> ' . $_SESSION['clienteEndereco'] . '</p>';
                 echo '</div>';
                 echo '<script>
                     function fecharPopup() {
                         document.querySelector(".cliente-info-popup").style.display = "none";
                     }
-                    // Mostre o popup ao carregar a página, você pode controlar quando mostrá-lo
+                    // Mostra o popup apenas se as informações do cliente estiverem definidas
                     document.addEventListener("DOMContentLoaded", function() {
-                        document.querySelector(".cliente-info-popup").style.display = "block";
+                        if(document.querySelector(".cliente-info-popup")) {
+                            document.querySelector(".cliente-info-popup").style.display = "block";
+                        }
                     });
                 </script>';
-            } else {
-                echo '<p>' . $clienteNaoEncontrado . '</p>';
             }
+        } else {
+            echo '<p>' . $clienteNaoEncontrado . '</p>';
         }
         ?>
     </div>

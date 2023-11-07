@@ -1,6 +1,6 @@
 <?php
 // Conecte-se ao banco de dados
-$pdo = new PDO("mysql:host=localhost;dbname=projeto_login", "root", "Hlm@1507");
+$pdo = new PDO("mysql:host=localhost;dbname=projeto_login", "root", "sua senha");
 
 // Função para calcular o custo total de compra
 function calcularCustoTotalCompra($categoria, $data_inicio, $data_fim)
