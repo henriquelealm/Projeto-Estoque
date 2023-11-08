@@ -184,12 +184,6 @@ if ($stmt8->rowCount() > 0) {
     $lucroMinimo = 'Nenhum lucro calculado';
     }
     
-
-
-
-
-
-
     
 } else {
     // Redirecione ou exiba uma mensagem de erro

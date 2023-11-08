@@ -9,7 +9,9 @@ if (!isset($_SESSION['id_usuario'])) {
 require_once 'config.php';
 
 $filtro_tipo_pagamento = "";
-if (isset($_GET['tipo_pagamento'])) {
+if (empty($_GET['tipo_pagamento'])) {
+    $filtro_tipo_pagamento = "";
+} else {
     $tipo_pagamento = $_GET['tipo_pagamento'];
     $filtro_tipo_pagamento = " AND venda.tipo_pagamento = '$tipo_pagamento'";
 }
@@ -20,6 +22,7 @@ $sql = "SELECT venda.id, venda.data_venda, funcionario.nome AS funcionario, vend
         LEFT JOIN cliente ON venda.id_cliente = cliente.id
         WHERE 1=1 $filtro_tipo_pagamento
         ORDER BY venda.data_venda DESC";
+
 
 $stmt = $pdo->query($sql);
 ?>
