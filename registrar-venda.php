@@ -1,9 +1,15 @@
 <?php
 session_start();
 
+
 if (!isset($_SESSION['id_usuario'])) {
     header("location: index.php");
     exit;
+}
+if (isset($_POST['nao_inserir_cliente']) && $_POST['nao_inserir_cliente'] == 1) {
+    unset($_SESSION['clienteNome']);
+    unset($_SESSION['clienteTelefone']);
+    unset($_SESSION['clienteEndereco']);
 }
 
 require_once 'config.php';
@@ -13,7 +19,7 @@ $clienteNome = '';
 $clienteTelefone = '';
 $clienteEndereco = '';
 $clienteNaoEncontrado = '';
-
+$cliente_id = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['pesquisar'])) {
         // Se o formulário de pesquisa de produtos foi submetido, faça a pesquisa
@@ -79,6 +85,8 @@ $stmt = $pdo->prepare("INSERT INTO venda (data_venda, funcionario_id, tipo_pagam
 $estaDevendo = isset($_POST['pagar_depois']) ? 1 : 0;
 $stmt->execute([$funcionario_id, $tipo_pagamento, $cliente_id, $estaDevendo]);
 $venda_id = $pdo->lastInsertId();
+
+
 
 // Agora percorra os itens vendidos (pode ser mais de um)
 if (isset($_POST['itens_vendidos'])) {
@@ -213,34 +221,36 @@ if ($quantidadeVendidaValida) {
 
         <?php
         if (isset($clienteNome)) {
-            // Exibir informações do cliente se encontrado
-            if (empty($clienteNaoEncontrado)) {
-                echo '<div class="cliente-info-popup">';
-                echo '<span class="close-popup" onclick="fecharPopup()">&times;</span>';
-                echo '<h2>Informações do Cliente:</h2>';
-                echo '<p><strong>Nome do Cliente:</strong> ' . $_SESSION['clienteNome'] . '</p>';
-                echo '<p><strong>Telefone:</strong> ' . $_SESSION['clienteTelefone'] . '</p>';
-                echo '<p><strong>Endereço:</strong> ' . $_SESSION['clienteEndereco'] . '</p>';
-                echo '</div>';
-                echo '<script>
-                    function fecharPopup() {
-                        document.querySelector(".cliente-info-popup").style.display = "none";
-                    }
-                </script>';
-            } else {
-                echo '<p>' . $clienteNaoEncontrado . '</p>';
-            }
-        }
+    // Exibir informações do cliente se encontrado
+    if (empty($clienteNaoEncontrado)) {
+        echo '<div class="cliente-info-popup">';
+        echo '<span class="close-popup" onclick="fecharPopup()">&times;</span>';
+        echo '<h2>Informações do Cliente:</h2>';
+        echo '<p><strong>Nome do Cliente:</strong> ' . $_SESSION['clienteNome'] . '</p>';
+        echo '<p><strong>Telefone:</strong> ' . $_SESSION['clienteTelefone'] . '</p>';
+        echo '<p><strong>Endereço:</strong> ' . $_SESSION['clienteEndereco'] . '</p>';
+        echo '</div>';
+    } else {
+        echo '<p class="erro">Cliente não encontrado.</p>';
+    }
+}
         ?>
 
-        <h2>Inserir Cliente</h2>
+<h2>Inserir Cliente</h2>
         <form method="POST" action="registrar-venda.php">
             <div class="form-row" id="cliente-search-bar">
                 <label for="cliente_cpf_cnpj" class="form-label">CPF ou CNPJ do Cliente:</label>
                 <input type="text" name="cliente_cpf_cnpj" class="form-input">
                 <input type="submit" name="pesquisar_cliente" value="Pesquisar Cliente" class="btn-branco">
             </div>
+
+            <div class="form-row">
+                <input type="hidden" name="nao_inserir_cliente" value="1">
+                <input type="submit" value="Não inserir cliente" class="botao-ninserir" float="right">
+
+            </div>
         </form>
+
         
         <?php
         if (isset($clienteNome)) {

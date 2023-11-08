@@ -227,19 +227,32 @@ label[for="cliente_cpf_cnpj"] {
 }
 
 .btn-branco {
-    background-color: #fff;
-    color: #333;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
+    background-color: #fcf8f8;
+    color: #000000;
     font-size: 16px;
-    transition: background-color 0.3s;
-}
+    margin-right: 10px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 
-.btn-branco:hover {
-    background-color: #eee;
-}
+  .botao-ninserir{
+    float: right; /* Posiciona o botão à direita */
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 100px;
+  }
+  
+  .btn-branco:hover {
+    background-color: #f5f5f5;
+  }
+  
 
 /* Estilos para o popup */
 .cliente-info-popup {
