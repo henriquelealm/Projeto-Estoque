@@ -34,11 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta charset="utf-8">
     <link rel="stylesheet" href="style/cadastrar-cliente.css">
     <title>Cadastro de Cliente</title>
 </head>
 <body>
+    <i class="fas fa-arrow-left voltar-icon" onclick="window.location.href='areaPrivada.php'"></i> 
     <h1>Cadastro de Cliente</h1>
     <form action="cadastrar-cliente.php" method="POST">
         <label for="nome">Nome:</label>

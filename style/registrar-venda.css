@@ -264,3 +264,67 @@ label[for="cliente_cpf_cnpj"] {
 .hidden {
     display: none;
 }
+
+/* Estilo para o texto "Pagar depois" */
+label[for="pagar_depois"] {
+    color: black; /* Tornar o texto preto */
+    font-size: 14px; /* Definir o tamanho da fonte desejado */
+}
+
+/* Estilo para o botão "Registrar Venda" */
+input[type="submit"][name="venda"] {
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px; /* Definir o tamanho da fonte desejado */
+    margin-top: 10px; /* Aumentar o espaçamento superior do botão */
+}
+
+/* Adicione esse estilo para o botão "Pagar depois" ficar preto */
+input[type="checkbox"][name="pagar_depois"] {
+    color: black; /* Tornar o texto preto */
+    font-size: 14px; /* Definir o tamanho da fonte desejado */
+}
+
+/* Estilo para o botão "Pesquisar Cliente" */
+input[type="submit"][name="pesquisar_cliente"] {
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px; /* Definir o tamanho da fonte desejado */
+    margin-top: 10px; /* Aumentar o espaçamento superior do botão */
+}
+/* Estilo para o texto "Pagar depois" */
+
+
+/* Estilo para o botão "Selecione o Método de Pagamento" */
+.label-payment {
+    display: inline; /* Coloque o texto e a caixa de seleção na mesma linha */
+    font-weight: bold;
+    color: black; /* Tornar o texto preto */
+    font-size: 16px; /* Definir o tamanho da fonte desejado */
+    margin-top: 0; /* Remova o espaçamento superior */
+}
+.form-label[for="pagar_depois"], .form-label[for="tipo_pagamento"] {
+    color: black; /* Tornar o texto preto */
+    font-size: 14px; /* Definir o tamanho da fonte desejado */
+    margin-top: 5px; /* Reduzir o espaçamento superior */
+}
+
+.voltar-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.btn-voltar {
+    margin-top: 30px;
+}

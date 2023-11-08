@@ -74,58 +74,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $pdo->beginTransaction();
 
-        // Crie uma nova entrada na tabela de venda
-        $stmt = $pdo->prepare("INSERT INTO venda (quantidade_unidades, data_venda, funcionario_id, tipo_pagamento, id_cliente) VALUES (?, NOW(), ?, ?, ?)");
-        $stmt->execute([0, $funcionario_id, $tipo_pagamento, $cliente_id]);
-        $venda_id = $pdo->lastInsertId();
+// Crie uma nova entrada na tabela de venda
+$stmt = $pdo->prepare("INSERT INTO venda (data_venda, funcionario_id, tipo_pagamento, id_cliente, esta_devendo) VALUES (NOW(), ?, ?, ?, ?)");
+$estaDevendo = isset($_POST['pagar_depois']) ? 1 : 0;
+$stmt->execute([$funcionario_id, $tipo_pagamento, $cliente_id, $estaDevendo]);
+$venda_id = $pdo->lastInsertId();
 
-        // Agora percorra os itens vendidos (pode ser mais de um)
-        if (isset($_POST['itens_vendidos'])) {
-            foreach ($_POST['itens_vendidos'] as $item) {
-                $item_id = $item['item_id'];
-                $categoria = $item['categoria'];
-                $quantidade_vendida = intval($item['quantidade_vendida']);
+// Agora percorra os itens vendidos (pode ser mais de um)
+if (isset($_POST['itens_vendidos'])) {
+    foreach ($_POST['itens_vendidos'] as $item) {
+        $item_id = $item['item_id'];
+        $categoria = $item['categoria'];
+        $quantidade_vendida = intval($item['quantidade_vendida']);
 
-                if ($quantidade_vendida > 0) {
-                    $quantidadeVendidaValida = true;
+        if ($quantidade_vendida > 0) {
+            $quantidadeVendidaValida = true;
 
-                    $stmt = $pdo->prepare("SELECT quantidade_unidades, preco_venda FROM $categoria WHERE id = ?");
-                    $stmt->execute([$item_id]);
-                    $estoque_info = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt = $pdo->prepare("SELECT quantidade_unidades, preco_venda FROM $categoria WHERE id = ?");
+            $stmt->execute([$item_id]);
+            $estoque_info = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                    if ($estoque_info && $estoque_info['quantidade_unidades'] >= $quantidade_vendida) {
-                        $preco_venda = $estoque_info['preco_venda'];
-                        $total_venda = $preco_venda * $quantidade_vendida;
+            if ($estoque_info && $estoque_info['quantidade_unidades'] >= $quantidade_vendida) {
+                $preco_venda = $estoque_info['preco_venda'];
+                $total_venda = $preco_venda * $quantidade_vendida;
 
-                        if ($categoria === 'bebida') {
-                            $stmt = $pdo->prepare("INSERT INTO venda_bebida (venda_id, bebida_id, quantidade, total_venda) VALUES (?, ?, ?, ?)");
-                        } elseif ($categoria === 'comida') {
-                            $stmt = $pdo->prepare("INSERT INTO venda_comida (venda_id, comida_id, quantidade, total_venda) VALUES (?, ?, ?, ?)");
-                        }
-                        $stmt->execute([$venda_id, $item_id, $quantidade_vendida, $total_venda]);
-
-                        $stmt = $pdo->prepare("UPDATE $categoria SET quantidade_unidades = quantidade_unidades - ? WHERE id = ?");
-                        $stmt->execute([$quantidade_vendida, $item_id]);
-                    } else {
-                        echo '<script>';
-                        echo 'alert("Quantidade insuficiente no estoque para o item com ID: ' . $item_id . '. A venda não foi registrada.");';
-                        echo '</script>';
-                    }
+                if ($categoria === 'bebida') {
+                    $stmt = $pdo->prepare("INSERT INTO venda_bebida (venda_id, bebida_id, quantidade, total_venda) VALUES (?, ?, ?, ?)");
+                } elseif ($categoria === 'comida') {
+                    $stmt = $pdo->prepare("INSERT INTO venda_comida (venda_id, comida_id, quantidade, total_venda) VALUES (?, ?, ?, ?)");
                 }
-            }
-        }
+                $stmt->execute([$venda_id, $item_id, $quantidade_vendida, $total_venda]);
 
-        if ($quantidadeVendidaValida) {
-            $pdo->commit();
-            echo "Venda registrada com sucesso!";
-        } else {
-            echo '<script>';
-            echo 'alert("Nenhum produto com quantidade válida foi selecionado. A venda não foi registrada.");';
-            echo '</script>';
+                $stmt = $pdo->prepare("UPDATE $categoria SET quantidade_unidades = quantidade_unidades - ? WHERE id = ?");
+                $stmt->execute([$quantidade_vendida, $item_id]);
+            } else {
+                echo '<script>';
+                echo 'alert("Quantidade insuficiente no estoque para o item com ID: ' . $item_id . '. A venda não foi registrada.");';
+                echo '</script>';
+            }
         }
     }
 }
+
+if ($quantidadeVendidaValida) {
+    $pdo->commit();
+    echo "Venda registrada com sucesso!";
+} else {
+    echo '<script>';
+    echo 'alert("Nenhum produto com quantidade válida foi selecionado. A venda não foi registrada.");';
+    echo '</script>';
+}
+    }
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -186,15 +188,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 echo '</table>';
                 echo '<div class="form-row">';
-                echo '<label for="tipo_pagamento" class "form-label">Selecione o Método de Pagamento:</label>';
+                echo '<label for="tipo_pagamento" class="form-label">Selecione o Método de Pagamento:</label>';
                 echo '<select name="tipo_pagamento" class="select-payment">';
                 echo '<option value="Cartão">Cartão</option>';
                 echo '<option value="PIX">PIX</option>';
                 echo '<option value="Dinheiro">Dinheiro</option>';
                 echo '</select>';
                 echo '</div>';
+                
+                // Adicione a nova opção "Pagar depois"
+                echo '<div class="form-row">';
+                echo '<label for="pagar_depois" class="form-label" style="color: black;">Pagar depois:</label>';
+                echo '<input type="checkbox" name="pagar_depois" value="1" class="form-input">';
+                echo '</div>';
+                
                 echo '<input type="submit" name="venda" value="Registrar Venda" class="btn-submit">';
                 echo '</form>';
+                
             } else {
                 echo 'Nenhum resultado encontrado.';
             }
@@ -264,7 +274,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         document.querySelector("body > div > form:nth-child(8)").style.display = 'none';
         document.querySelector("body > div > h2:nth-child(7)").style.display = 'none';
     }
-</script>
-
+    </script>
 </body>
 </html>

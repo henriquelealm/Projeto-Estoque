@@ -7,12 +7,10 @@
 body {
     background-image: url(../imagens/principal.png);
     background-size: cover;
-    color: #333; /* Letras mais escuras */
+    color: #333;
     font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     min-height: 100vh;
+    text-align: center; /* Centraliza o texto na horizontal */
 }
 
 .content {
@@ -20,39 +18,31 @@ body {
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    margin-top: 20px;
+    margin: 20px auto; /* Centraliza o conteúdo horizontalmente e adiciona margem superior/inferior */
     padding: 30px;
     text-align: center;
-    color: #333; /* Letras mais escuras */
 }
 
 h1 {
     font-size: 24px;
     margin: 20px 0;
-    color: #333; /* Letras mais escuras */
+    color: #ffffff;
 }
 
 table {
-    width: 100%;
+    width: 80%; /* Reduz a largura da tabela para 80% do seu contêiner pai */
     border-collapse: collapse;
-    margin: 10px;
-}
-
-table, th, td {
-    border: 1px solid #ccc;
+    margin: 10px auto; /* Centraliza a tabela horizontalmente e adiciona margem superior/inferior */
+    background-color: #f2f2f2; /* Define a cor de fundo da tabela */
 }
 
 th, td {
     padding: 8px;
     text-align: left;
-    color: #333; /* Letras mais escuras */
+    color: #333;
 }
 
 th {
-    background-color: #f2f2f2;
-}
-
-tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
@@ -61,15 +51,7 @@ input[type="text"] {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    color: #333; /* Letras mais escuras */
-}
-
-select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    color: #333; /* Letras mais escuras */
+    color: #333;
 }
 
 input[type="submit"] {

@@ -66,19 +66,6 @@ $resultadoComida = $pdo->query($sqlComida);
     <meta charset="utf-8">
     <title>Editar Estoque</title>
     <link rel="stylesheet" href="style/editar-estoque.css">
-    <style>
-        .voltar-icon {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .btn-voltar {
-            margin-top: 30px;
-        }
-    </style>
 </head>
 
 <body>

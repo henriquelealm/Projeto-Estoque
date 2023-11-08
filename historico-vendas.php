@@ -1,12 +1,52 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['id_usuario'])) {
+    header("location: index.php");
+    exit;
+}
+
+require_once 'config.php';
+
+$filtro_tipo_pagamento = "";
+if (isset($_GET['tipo_pagamento'])) {
+    $tipo_pagamento = $_GET['tipo_pagamento'];
+    $filtro_tipo_pagamento = " AND venda.tipo_pagamento = '$tipo_pagamento'";
+}
+
+$sql = "SELECT venda.id, venda.data_venda, funcionario.nome AS funcionario, venda.tipo_pagamento, cliente.nome AS cliente_nome, cliente.telefone AS cliente_telefone, cliente.endereco_id
+        FROM venda
+        JOIN funcionario ON venda.funcionario_id = funcionario.id
+        LEFT JOIN cliente ON venda.id_cliente = cliente.id
+        WHERE 1=1 $filtro_tipo_pagamento
+        ORDER BY venda.data_venda DESC";
+
+$stmt = $pdo->query($sql);
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>Histórico de Vendas</title>
     <link rel="stylesheet" href="style/historico-vendas.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <i class="fas fa-arrow-left voltar-icon" onclick="window.location.href='areaPrivada.php'"></i>
     <h1>Histórico de Vendas</h1>
+    
+    <form method="get">
+        <label for="tipo_pagamento">Filtrar por Tipo de Pagamento:</label>
+        <select name="tipo_pagamento" id="tipo_pagamento">
+            <option value="">Todos</option>
+            <option value="Cartão">Cartão</option>
+            <option value="PIX">PIX</option>
+            <option value="Dinheiro">Dinheiro</option>
+        </select>
+        <button type="submit">Filtrar</button>
+    </form>
+    
     <table>
         <tr>
             <th>ID da Venda</th>
@@ -19,16 +59,6 @@
             <th>Endereço do Cliente</th>
         </tr>
         <?php
-        // Conexão com o banco de dados
-        require_once 'config.php';
-
-        $sql = "SELECT venda.id, venda.data_venda, funcionario.nome AS funcionario, venda.tipo_pagamento, cliente.nome AS cliente_nome, cliente.telefone AS cliente_telefone, cliente.endereco_id
-        FROM venda
-        JOIN funcionario ON venda.funcionario_id = funcionario.id
-        LEFT JOIN cliente ON venda.id_cliente = cliente.id";
-
-        $stmt = $pdo->query($sql);
-
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $venda_id = $row['id'];
 
@@ -84,7 +114,6 @@
             }
             echo "</p>";
             echo "</td>";
-
         }
         ?>
     </table>

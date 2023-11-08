@@ -89,4 +89,15 @@ th:nth-child(5), td:nth-child(5) {
     color: green; /* Defina a cor verde para o texto "total da venda" */
 }
 
+.voltar-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.btn-voltar {
+    margin-top: 30px;
+}
 

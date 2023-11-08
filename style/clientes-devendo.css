@@ -1,0 +1,89 @@
+/* Estilos gerais da página */
+body {
+    background-image: url(../imagens/principal.png);
+    background-size: cover;
+    color: #333; /* Letras mais escuras */
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.container {
+    background-color: #fff;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+}
+
+h1 {
+    font-size: 24px;
+    color: #333;
+    margin: 0 0 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+}
+
+th {
+    background-color: #333;
+    color: #fff;
+}
+
+/* Estilos para a coluna "Pagamento Realizado" */
+table input[type="checkbox"] {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Estilos para o botão "Salvar Alterações" */
+input[type="submit"][name="salvar"] {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 20px 0;
+}
+
+input[type="submit"][name="salvar"]:hover {
+    background-color: #555;
+}
+
+/* Estilos para o ícone de voltar */
+.voltar-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.voltar-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.btn-voltar {
+    margin-top: 30px;
+}
