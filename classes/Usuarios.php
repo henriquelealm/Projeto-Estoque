@@ -5,18 +5,27 @@ class Usuarios {
     public $msgERRO = "";
 
     public function conectar() {
-        $host = "localhost"; // Altere para o seu host, se necessário
-        $nome = "projeto_login"; // Altere para o nome do seu banco de dados
-        $usuario = "root"; // Altere para o nome de usuário do seu banco de dados
-        $senha = "Hlm@1507"; // Altere para a senha do seu banco de dados
+        $host = "kentao-bd.cpysdt0xcid9.us-east-2.rds.amazonaws.com"; // Altere para o seu host, se necessário
+        $nome = "kentaoBD"; // Altere para o nome do seu banco de dados
+        $usuario = "admin"; // Altere para o nome de usuário do seu banco de dados
+        $senha = "kentao2023"; // Altere para a senha do seu banco de dados
 
         try {
             $this->pdo = new PDO("mysql:dbname=" . $nome . ";host=" . $host, $usuario, $senha);
+            return true; // Conexão bem-sucedida
         } catch (PDOException $e) {
             $this->msgERRO = $e->getMessage();
+            return false; // Erro na conexão
         }
     }
 
+    public function testarConexao() {
+        if ($this->conectar()) {
+            echo "Conexão bem-sucedida ao banco de dados.";
+        } else {
+            echo "Erro na conexão ao banco de dados: " . $this->msgERRO;
+        }
+    }
     public function cadastrar($nome, $telefone, $email, $senha) {
         $sql = $this->pdo->prepare("SELECT id_usuario FROM usuarios WHERE email = :e");
         $sql->bindValue(":e", $email);

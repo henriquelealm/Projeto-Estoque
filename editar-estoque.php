@@ -132,15 +132,7 @@ $resultadoComida = $pdo->query($sqlComida);
                 echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
                 echo "<input type='hidden' name='categoria' value='comida'>";
                 echo "<td>" . $row['id'] . "</td>";
-                echo "<td>
-                    <select name='tipo'>
-                        <option value='Massa' " . ($row['tipo'] === 'Massa' ? 'selected' : '') . ">Massa</option>
-                        <option value='Carne' " . ($row['tipo'] === 'Carne' ? 'selected' : '') . ">Carne</option>
-                        <option value='Legumes' " . ($row['tipo'] === 'Legumes' ? 'selected' : '') . ">Legumes</option>
-                        <option value='Peixe' " . ($row['tipo'] === 'Peixe' ? 'selected' : '') . ">Peixe</option>
-                        <option value='Frango' " . ($row['tipo'] === 'Frango' ? 'selected' : '') . ">Frango</option>
-                    </select>
-                </td>";
+                echo "<td>Comida</td>";
                 echo "<td><input type='text' name='nome' value='" . $row['nome'] . "'></td>";
                 echo "<td><input type='text' name='data_entrada' value='" . $row['data_entrada'] . "'></td>";
                 echo "<td><input type='text' name='data_validade' value='" . $row['data_validade'] . "'></td>";

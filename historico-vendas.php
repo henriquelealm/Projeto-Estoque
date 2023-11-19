@@ -16,9 +16,9 @@ if (empty($_GET['tipo_pagamento'])) {
     $filtro_tipo_pagamento = " AND venda.tipo_pagamento = '$tipo_pagamento'";
 }
 
-$sql = "SELECT venda.id, venda.data_venda, funcionario.nome AS funcionario, venda.tipo_pagamento, cliente.nome AS cliente_nome, cliente.telefone AS cliente_telefone, cliente.endereco_id
+$sql = "SELECT venda.id, venda.data_venda, usuarios.nome AS funcionario, venda.tipo_pagamento, cliente.nome AS cliente_nome, cliente.telefone AS cliente_telefone, cliente.endereco_id
         FROM venda
-        JOIN funcionario ON venda.funcionario_id = funcionario.id
+        JOIN usuarios ON venda.funcionario_id = usuarios.id_usuario
         LEFT JOIN cliente ON venda.id_cliente = cliente.id
         WHERE 1=1 $filtro_tipo_pagamento
         ORDER BY venda.data_venda DESC";

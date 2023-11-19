@@ -218,7 +218,6 @@ if ($stmt8->rowCount() > 0) {
             <li><a href="historico-vendas.php">Histórico de Vendas</a></li>
             <li><a href="clientes-devendo.php">Clientes Devendo</a></li>
             <li><a href="editar-estoque.php">Editar Estoque</a></li>
-            <li><a href="gerar-relatorios.php">Gerar Relatórios</a></li>
             <li><a href="alterar-cliente.php">Alterar Cliente</a></li>
             <li><a href="sair.php">Sair</a></li>
         </ul>
@@ -226,61 +225,65 @@ if ($stmt8->rowCount() > 0) {
 </div>
 
 <!-- Conteúdo da página da área privada -->
-<div class="total-gasto">
-    <!-- Post-it com o valor Total gasto no mês -->
+<div class="teste">
+
+    <div class="linha">
+        <!-- Post-it com o valor Total gasto no mês -->
     <div class="post-it">
         <strong>Total gasto no mês:</strong><br>
         R$ <?php echo number_format($custoTotalNoMes, 2, ',', '.'); ?>
     </div>
 
     <!-- Post-it com o valor Total de vendas no mês -->
-    <div class="post-it2">
+    <div class="post-it">
         <strong>Total de vendas no mês:</strong><br>
         R$ <?php echo number_format($totalVendasNoMes, 2, ',', '.'); ?>
     </div>
 
     <!-- Post-it com a bebida mais vendida -->
-    <div class="post-it3">
+    <div class="post-it">
         <strong>Bebida mais vendida:</strong><br>
         <?php echo $bebidaMaisVendida; ?>
     </div>
-
-    <div class="post-it4">
-        <strong>Comida mais vendida:</strong><br>
-        <?php echo $comidaMaisVendida; ?>
     </div>
 
-    <div class="post-it5">
-    <strong>Saldo do mês:</strong><br>
-    R$ <?php echo number_format($totalVendasNoMes - $custoTotalNoMes, 2, ',', '.'); ?>
+    <div class="linha">
+        <div class="post-it">
+            <strong>Comida mais vendida:</strong><br>
+            <?php echo $comidaMaisVendida; ?>
+        </div>
+    
+        <div class="post-it">
+        <strong>Saldo do mês:</strong><br>
+        R$ <?php echo number_format($totalVendasNoMes - $custoTotalNoMes, 2, ',', '.'); ?>
+    </div>
+    
+    <div class="post-it">
+        <strong>Margem de lucro média (Comidas):</strong><br>
+        <?php echo number_format($margemLucroMediaC *100 , 2, ',', '.'); ?>%
+    </div>
+    </div>
+
+<div class="linha">
+    <div class="post-it">
+        <strong>Margem de lucro média (Bebidas):</strong><br>
+        <?php echo number_format($margemLucroMediaB *100 , 2, ',', '.'); ?>%
+    </div>
+    
+    <div class="post-it">
+        <strong>Produto mais lucrativo:</strong><br>
+        <?php echo ($lucroMaximo); ?>
+    </div>
+    
+    <div class="post-it">
+        <strong>Produto menos lucrativo:</strong><br>
+        <?php echo ($lucroMinimo); ?>
+    </div>
+    </div>
 </div>
 
 
 
-<div class="post-it6">
-    <strong>Margem de lucro média (Comidas):</strong><br>
-    <?php echo number_format($margemLucroMediaC *100 , 2, ',', '.'); ?>%
-</div>
-
-
-<div class="post-it7">
-    <strong>Margem de lucro média (Bebidas):</strong><br>
-    <?php echo number_format($margemLucroMediaB *100 , 2, ',', '.'); ?>%
-</div>
-
-<div class="post-it8">
-    <strong>Produto mais lucrativo:</strong><br>
-    <?php echo ($lucroMaximo); ?>
-</div>
-
-<div class="post-it9">
-    <strong>Produto menos lucrativo:</strong><br>
-    <?php echo ($lucroMinimo); ?>
-</div>
-
-
-
-</div>
 
 <script>
     function toggleMenu() {

@@ -1,18 +1,17 @@
-*{
-    margin: 0px;
-    padding: 0px;
+* {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
-body{
-    background-image: URL(../imagens/principal.png);
+body {
+    background-image: url(../imagens/principal.png);
     background-size: cover;
-    color: white;
+    color: black; /* Alterado para texto preto */
     font-family: Arial;
-
 }
 
-input{
+input {
     display: block;
     height: 55px;
     width: 400px;
@@ -21,78 +20,81 @@ input{
     border: none;
     font-size: 16pt;
     padding: 10px 20px;
-    background-color: rgba(255, 255, 255, 0.04);
-    color: white;
+    background-color: rgba(0, 0, 0, 0.2); /* Alterado para um tom mais escuro */
+    color: white; /* Alterado para texto branco */
     outline: none;
-
 }
 
-div#corpo-form{
+div#corpo-form {
     width: 420px;
-    margin: 150px auto 0px auto;
+    margin: 150px auto 0 auto;
 }
 
-div#corpo-form-cad{
+div#corpo-form-cad {
     width: 420px;
-    margin: 40px auto 0px auto;
+    margin: 40px auto 0 auto;
 }
 
-div#corpo-form h1, div#corpo-form h2, div#corpo-form-cad h1{
+div#corpo-form h1,
+div#corpo-form h2,
+div#corpo-form-cad h1 {
     text-align: center;
     padding: 20px;
 }
 
-a{
-    color: white;
+a {
+    color: black; /* Alterado para texto preto */
     text-decoration: none;
     text-align: center;
     display: block;
 }
 
-a:hover{
+a:hover {
     text-decoration: underline;
 }
 
-input[type=submit]{
-    background-color: #10688E;
+input[type=submit] {
+    background-color: #333;
     cursor: pointer;
     transition: 0.3s;
-    
 }
 
-input[type=submit]:hover{
-    background-color: #1278a3;
-    
+input[type=submit]:hover {
+    background-color: #444; /* Alterado para um tom mais escuro */
 }
 
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    color: #fff;
-}
-::-moz-placeholder { /* Firefox 19+ */
-    color: #fff;
-}
-:-ms-input-placeholder { /* IE 10+ */
-    color: #fff;
-}
-:-moz-placeholder { /* Firefox 18- */
-    color: #fff;
+::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
+    color: #999; /* Alterado para um tom mais escuro */
 }
 
+::-moz-placeholder {
+    /* Firefox 19+ */
+    color: #999; /* Alterado para um tom mais escuro */
+}
 
-div#msg-sucesso{
+:-ms-input-placeholder {
+    /* IE 10+ */
+    color: #999; /* Alterado para um tom mais escuro */
+}
+
+:-moz-placeholder {
+    /* Firefox 18- */
+    color: #999; /* Alterado para um tom mais escuro */
+}
+
+div#msg-sucesso {
     width: 400px;
     margin: 10px auto;
     padding: 10px;
-    background-color: rgba(50, 205, 50, .3);
-    border: 1px solid rgb(34, 139, 34);
-
+    background-color: rgba(0, 128, 0, 0.3); /* Alterado para um tom mais escuro de verde */
+    border: 1px solid rgb(0, 128, 0); /* Alterado para um tom mais escuro de verde */
 }
 
-div.msg-erro{
+div.msg-erro {
     width: 400px;
     margin: 10px auto;
     padding: 10px;
-    background-color: rgba(250, 128, 114, .3);
-    border: 1px solid rgb(165, 42, 42);
-
+    background-color: rgba(255, 69, 0, 0.3); /* Alterado para um tom mais escuro de laranja */
+    border: 1px solid rgb(255, 69, 0); /* Alterado para um tom mais escuro de laranja */
 }

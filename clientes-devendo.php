@@ -24,10 +24,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['salvar'])) {
 }
 
 // Consulta para obter todas as vendas e clientes que estão devendo
-$sql = "SELECT v.id AS venda_id, v.data_venda, c.nome AS cliente_nome, c.telefone, v.tipo_pagamento
-        FROM venda v
-        INNER JOIN cliente c ON v.id_cliente = c.id
-        WHERE v.esta_devendo = '1'";
+$sql = "SELECT v.id AS venda_id, v.data_venda, c.nome AS cliente_nome, c.telefone, v.tipo_pagamento,
+       SUM(IFNULL(vc.total_venda, 0) + IFNULL(vb.total_venda, 0)) AS valor_divida
+FROM venda v
+INNER JOIN cliente c ON v.id_cliente = c.id
+LEFT JOIN venda_comida vc ON v.id = vc.venda_id
+LEFT JOIN venda_bebida vb ON v.id = vb.venda_id
+WHERE v.esta_devendo = '1'
+GROUP BY v.id;
+";
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
@@ -54,6 +59,7 @@ $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th>Nome do Cliente</th>
                     <th>Telefone</th>
                     <th>Método de Pagamento</th>
+                    <th>Valor da Dívida</th>
                     <th>Pagamento Realizado</th>
                 </tr>
                 <?php foreach ($resultados as $row): ?>
@@ -63,6 +69,7 @@ $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td><?= $row['cliente_nome'] ?></td>
                         <td><?= $row['telefone'] ?></td>
                         <td><?= $row['tipo_pagamento'] ?></td>
+                        <td>R$ <?= number_format($row['valor_divida'], 2) ?></td>
                         <td>
                             <input type="checkbox" name="pagamento_realizado[]" value="<?= $row['venda_id'] ?>">
                         </td>

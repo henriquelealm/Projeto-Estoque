@@ -1,3 +1,4 @@
+/* Reset padrão e configuração global */
 * {
     margin: 0;
     padding: 0;
@@ -7,7 +8,7 @@
 body {
     background-image: url(../imagens/principal.png);
     background-size: cover;
-    color: white;
+    color: black; /* Texto preto para contrastar com o fundo branco */
     font-family: Arial;
     display: flex;
     justify-content: center;
@@ -100,6 +101,7 @@ tr {
     background-color: white;
     color: #333; /* Definir a cor do texto para preto ou outra cor desejada */
 }
+
 tr.resultado {
     max-height: 2px; /* Diminuir a altura das linhas de resultados */
     overflow-y: hidden; /* Remover a rolagem vertical para linhas mais curtas */
@@ -228,31 +230,30 @@ label[for="cliente_cpf_cnpj"] {
 
 .btn-branco {
     background-color: #fcf8f8;
-    color: #000000;
+    color: black; /* Texto preto para contrastar */
     font-size: 16px;
     margin-right: 10px;
     font-weight: bold;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-  }
+}
 
-  .botao-ninserir{
+.botao-ninserir {
     float: right; /* Posiciona o botão à direita */
     background-color: #ffffff;
-    color: #000000;
+    color: black; /* Texto preto para contrastar */
     font-size: 16px;
     font-weight: bold;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     margin-right: 100px;
-  }
-  
-  .btn-branco:hover {
+}
+
+.btn-branco:hover {
     background-color: #f5f5f5;
-  }
-  
+}
 
 /* Estilos para o popup */
 .cliente-info-popup {
@@ -273,6 +274,7 @@ label[for="cliente_cpf_cnpj"] {
     right: 5px;
     cursor: pointer;
 }
+
 /* Adicione este CSS ao seu arquivo CSS da página */
 .hidden {
     display: none;
@@ -313,8 +315,8 @@ input[type="submit"][name="pesquisar_cliente"] {
     font-size: 16px; /* Definir o tamanho da fonte desejado */
     margin-top: 10px; /* Aumentar o espaçamento superior do botão */
 }
-/* Estilo para o texto "Pagar depois" */
 
+/* Estilo para o texto "Pagar depois" */
 
 /* Estilo para o botão "Selecione o Método de Pagamento" */
 .label-payment {

@@ -8,7 +8,7 @@
 body {
     background-image: url(../imagens/principal.png);
     background-size: cover;
-    color: white;
+    color: black; /* Texto em preto */
     font-family: Arial;
     display: flex;
     flex-direction: column; /* Alterado para centralizar verticalmente */
@@ -45,7 +45,7 @@ table, th, td {
 th, td {
     padding: 8px;
     text-align: left;
-    color: #333;
+    color: black; /* Texto em preto */
 }
 
 /* Adicione um padding maior para a coluna "Itens Vendidos" */
@@ -76,12 +76,12 @@ a:hover {
         font-size: 14px;
     }
 }
+
 th:nth-child(5), td:nth-child(5) {
     padding: 8px 20px; /* Adicione mais espaço à esquerda e direita da coluna "Itens Vendidos" */
 }
 
-
-th:nth-child(5), td:nth-child(5) {
+.th:nth-child(5), .td:nth-child(5) {
     padding: 8px 20px; /* Adicione mais espaço à esquerda e direita da coluna "Itens Vendidos" */
 }
 
@@ -95,9 +95,18 @@ th:nth-child(5), td:nth-child(5) {
     left: 10px;
     font-size: 24px;
     cursor: pointer;
+    color: black; /* Ícone em preto */
 }
 
 .btn-voltar {
     margin-top: 30px;
+    background-color: #333; /* Fundo mais escuro para o botão */
+    color: black; /* Texto em preto */
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
+.btn-voltar:hover {
+    background-color: #555; /* Fundo mais escuro quando hover */
+}

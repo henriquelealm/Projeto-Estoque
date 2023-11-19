@@ -28,8 +28,7 @@
 	CREATE TABLE cliente (
 	    id INT AUTO_INCREMENT PRIMARY KEY,
 	    nome VARCHAR(100),
-	    cpf_ou_cnpj CHAR(14),
-        telefone varchar(20)
+	    cpf_ou_cnpj CHAR(14)
 	);
 	
 	CREATE TABLE bebida (
@@ -115,14 +114,18 @@
 	
 	ALTER TABLE venda
 	ADD tipo_pagamento ENUM('Cartão', 'PIX', 'Dinheiro');
-	
+
+	ALTER TABLE venda
+	ADD id_cliente int,
+	add foreign key (id_cliente) references cliente(id);
+
 	ALTER TABLE venda_bebida
 	ADD quantidade INT;
 	
 	ALTER TABLE venda_comida
 	ADD quantidade INT;
 	
-	CREATE TABLE endereco (
+	CREATE TABLE endereco (a
 	    id INT AUTO_INCREMENT PRIMARY KEY,
 	    rua VARCHAR(255),
 	    cidade VARCHAR(100),
@@ -138,4 +141,8 @@
 	ALTER TABLE cliente
 	ADD telefone varchar(20);
 	
-	
+	alter table ENDERECO
+	add complemento VARCHAR(100);
+
+	alter table venda
+	add esta_devendo ENUM('0', '1');

@@ -7,7 +7,7 @@
 body {
     background-image: url(../imagens/principal.png);
     background-size: cover;
-    color: white;
+    color: #333; /* Texto em cinza mais claro */
     font-family: Arial;
     display: flex;
     justify-content: center;
@@ -21,13 +21,14 @@ input {
     width: 400px;
     margin: 10px;
     border-radius: 30px;
-    border: none;
+    border: 2px solid #ddd; /* Adicionando uma borda cinza claro */
     font-size: 16pt;
     padding: 10px 20px;
-    background-color: rgba(255, 255, 255, 0.04);
-    color: white;
+    background-color: rgba(255, 255, 255, 0.7);
+    color: #333;
     outline: none;
 }
+
 
 input[type="radio"] {
     display: none;
@@ -35,7 +36,7 @@ input[type="radio"] {
 
 label[for^="categoria"] {
     display: inline-block;
-    background: #333;
+    background: #555; /* Fundo em cinza mais escuro */
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
@@ -45,7 +46,7 @@ label[for^="categoria"] {
 }
 
 label[for^="categoria"]:hover {
-    background: #555;
+    background: #777; /* Fundo em cinza escuro quando hover */
 }
 
 input[type="radio"]:checked + label[for^="categoria"] {
@@ -69,10 +70,11 @@ div#corpo-form h2,
 div#corpo-form-cad h1 {
     text-align: center;
     padding: 20px;
+    color: #333; /* Texto em cinza mais claro */
 }
 
 a {
-    color: white;
+    color: #333; /* Texto em cinza mais claro */
     text-decoration: none;
     text-align: center;
     display: block;
@@ -83,7 +85,7 @@ a:hover {
 }
 
 input[type=submit] {
-    background-color: #10688E;
+    background-color: #b5b5b5;
     cursor: pointer;
     transition: 0.3s;
 }
@@ -93,26 +95,26 @@ input[type=submit]:hover {
 }
 
 ::-webkit-input-placeholder {
-    color: #fff;
+    color: #555; /* Texto em cinza mais escuro */
 }
 
 ::-moz-placeholder {
-    color: #fff;
+    color: #555; /* Texto em cinza mais escuro */
 }
 
 :-ms-input-placeholder {
-    color: #fff;
+    color: #555; /* Texto em cinza mais escuro */
 }
 
 :-moz-placeholder {
-    color: #fff;
+    color: #555; /* Texto em cinza mais escuro */
 }
 
 div#msg-sucesso {
     width: 400px;
     margin: 10px auto;
     padding: 10px;
-    background-color: rgba(50, 205, 50, .3);
+    background-color: rgba(50, 205, 50, .5); /* Fundo verde mais claro */
     border: 1px solid rgb(34, 139, 34);
 }
 
@@ -120,7 +122,7 @@ div.msg-erro {
     width: 400px;
     margin: 10px auto;
     padding: 10px;
-    background-color: rgba(250, 128, 114, .3);
+    background-color: rgba(250, 128, 114, .5); /* Fundo vermelho mais claro */
     border: 1px solid rgb(165, 42, 42);
 }
 
@@ -130,7 +132,7 @@ div.msg-erro {
     align-items: center;
     margin-left: 10px;
     font-size: 14px;
-    color: #333;
+    color: #333; /* Texto em cinza mais claro */
 }
 
 .checkbox-label input {
@@ -144,6 +146,7 @@ div.msg-erro {
     left: 10px;
     font-size: 24px;
     cursor: pointer;
+    color: #333; /* Ícone em cinza mais claro */
 }
 
 .btn-voltar {

@@ -1,8 +1,12 @@
 <?php
-$host = "localhost";
-$database = "projeto_login";
-$username = "root";
-$password = "Hlm@1507";
+$host = "kentao-bd.cpysdt0xcid9.us-east-2.rds.amazonaws.com";
+$port = 3306;
+$username = "admin";
+$password = "kentao2023";
+$database = "kentaoBD";
+
+
+
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$database", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
