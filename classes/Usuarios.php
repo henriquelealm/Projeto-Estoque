@@ -54,6 +54,7 @@ class Usuarios {
             $dado = $sql->fetch();
             session_start();
             $_SESSION['id_usuario'] = $dado['id_usuario'];
+            
             return true; // Logado com sucesso
         } else {
             return false; // Login falhou
